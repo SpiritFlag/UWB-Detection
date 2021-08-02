@@ -24,7 +24,7 @@ class SignalExtraction():
                 print("")
 
             for fileName in fileNameList:
-                file = open(orgSignalPath + fileName + ".txt", "r")
+                file = open(orgSignalPath + fileName + ".log", "r")
 
                 for x in range(nPreSignal):
                     while True:
@@ -34,6 +34,7 @@ class SignalExtraction():
 
                 signalListI = []
                 signalListQ = []
+                distanceList = []
 
                 for x in tqdm(range(nSignal), desc=fileName, ncols=100,
                     unit=" signal"):
@@ -42,21 +43,30 @@ class SignalExtraction():
 
                     while True:
                         line = file.readline()
-                        if len(line) > 0 and line[:10] == "Accum Len ":
-                            for y in range(nSample):
-                                line = [float(i) for i in \
-                                    file.readline().rstrip("\n").split(", ")]
-                                signalI.append(line[0])
-                                signalQ.append(line[1])
-                            break
+                        if len(line) > 0 and line[:10] == "Anchor ToF":
+                            distanceList.append(float(line[27:35]))
 
-                    signalListI.append(signalI)
-                    signalListQ.append(signalQ)
+                            while True:
+                                line = file.readline()
+                                if len(line) > 0 and line[:10] == "Accum Len ":
+                                    for y in range(nSample):
+                                        line = [float(i) for i in \
+                                            file.readline().rstrip("\n").split(", ")]
+                                        signalI.append(line[0])
+                                        signalQ.append(line[1])
+                                    break
+
+                            signalListI.append(signalI)
+                            signalListQ.append(signalQ)
+
+                            break
 
                 np.save(extractSignalPath + fileName + "_Isignal",
                     np.array(signalListI))
                 np.save(extractSignalPath + fileName + "_Qsignal",
                     np.array(signalListQ))
+                np.save(extractSignalPath + fileName + "_distance",
+                    np.array(distanceList))
 
             print()
 

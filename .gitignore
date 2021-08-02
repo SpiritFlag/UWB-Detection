@@ -1,5 +1,7 @@
 misc/
 src/__pycache__/
 src/preprocess/__pycache__/
+src/deeplearning/__pycache__/
 tool/fig_2D/fig/
 tool/fig_3D/fig/
+tool/distance/fig/

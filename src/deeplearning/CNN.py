@@ -24,8 +24,10 @@ class CNN(tf.keras.Model):
 
     def buildModel(self):
         try:
+            # self.input_layer = tf.keras.layers.Input(
+            #     shape=(1, size_input_layer, size_input_filter), name="input")
             self.input_layer = tf.keras.layers.Input(
-                shape=(1, size_input_layer, size_input_filter), name="input")
+                shape=(size_input_layer), name="input")
             self.noise_layer = tf.keras.layers.GaussianNoise(
                 stddev=0.1, name="gaussian_noise")
 
@@ -34,27 +36,27 @@ class CNN(tf.keras.Model):
             else:
                 layer = self.input_layer
 
-            for idx in range(len(size_filter)):
-                conv_layer = tf.keras.layers.Conv2D(filters=size_filter[idx],
-                    kernel_initializer='he_uniform',
-                    kernel_size=(1, size_conv_layer), name="conv"+str(idx+1))
-                layer = conv_layer(layer)
-
-                if is_batch_normalization is True:
-                    batch_layer = tf.keras.layers.BatchNormalization(
-                        name="conv_batch"+str(idx+1))
-                    layer = batch_layer(layer)
-
-                activation_layer = tf.keras.layers.Activation(
-                    tf.nn.relu, name="conv_activation"+str(idx+1))
-                layer = activation_layer(layer)
-
-                pool_layer = tf.keras.layers.MaxPooling2D(
-                    pool_size=(1, size_pool_layer), name="pool"+str(idx+1))
-                layer = pool_layer(layer)
-
-            self.flatten_layer = tf.keras.layers.Flatten(name="flatten")
-            layer = self.flatten_layer(layer)
+            # for idx in range(len(size_filter)):
+            #     conv_layer = tf.keras.layers.Conv2D(filters=size_filter[idx],
+            #         kernel_initializer='he_uniform',
+            #         kernel_size=(1, size_conv_layer), name="conv"+str(idx+1))
+            #     layer = conv_layer(layer)
+            #
+            #     if is_batch_normalization is True:
+            #         batch_layer = tf.keras.layers.BatchNormalization(
+            #             name="conv_batch"+str(idx+1))
+            #         layer = batch_layer(layer)
+            #
+            #     activation_layer = tf.keras.layers.Activation(
+            #         tf.nn.relu, name="conv_activation"+str(idx+1))
+            #     layer = activation_layer(layer)
+            #
+            #     pool_layer = tf.keras.layers.MaxPooling2D(
+            #         pool_size=(1, size_pool_layer), name="pool"+str(idx+1))
+            #     layer = pool_layer(layer)
+            #
+            # self.flatten_layer = tf.keras.layers.Flatten(name="flatten")
+            # layer = self.flatten_layer(layer)
 
             for idx in range(len(size_dense_layer)):
                 dense_layer = tf.keras.layers.Dense(

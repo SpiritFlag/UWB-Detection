@@ -148,16 +148,16 @@ class MyCallback(tf.keras.callbacks.Callback):
       train_res = self.test_fnc(self.train_data[0], type=1)
       train_ans = self.train_data[1]
 
-      tsne = TSNE(random_state = 42).fit_transform(train_res)
-      for x in range(len(train_res)):
-          plt.plot(tsne[x][0], tsne[x][1])
-          plt.text(tsne[x][0], tsne[x][1], str(np.argmax(train_ans[x])+1),
-              color = colors[np.argmax(train_ans[x])],
-              fontdict = {'weight':'bold','size':9})
-      plt.savefig("train.png", dpi=300)
-      plt.close()
+      # tsne = TSNE(random_state = 42).fit_transform(train_res)
+      # for x in range(len(train_res)):
+      #     plt.plot(tsne[x][0], tsne[x][1])
+      #     plt.text(tsne[x][0], tsne[x][1], str(np.argmax(train_ans[x])+1),
+      #         color = colors[np.argmax(train_ans[x])],
+      #         fontdict = {'weight':'bold','size':9})
+      # plt.savefig("train.png", dpi=300)
+      # plt.close()
 
-      print(f"\t\tTRAIN\t\tSUCCESS=\t{self.best_success2:5d} / {len(self.train_data[0]):5d} ({100*self.best_success2/len(self.train_data[0]):2.2f}%)")
+      print(f"\t\tTRAIN\tSUCCESS=\t{self.best_success2:5d} / {len(self.train_data[0]):5d} ({100*self.best_success2/len(self.train_data[0]):2.2f}%)")
       print(f"\t\tVALIDATION SUCCESS=\t{self.best_success:5d} / {self.n_val:5d} ({100*self.best_success/self.n_val:2.2f}%)")
       print("\n\n", end="")
 

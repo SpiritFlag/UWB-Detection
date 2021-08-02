@@ -5,7 +5,7 @@ cuda_device_id = "1"
 colors = ["b", "g", "r", "c", "m", "y", "k"]
 
 dataPath = "misc/data/"
-expNum = 3
+expNum = 4
 
 if expNum < 10:
     dataPathPrefix = dataPath + "exp0" + str(expNum) + "_"
@@ -57,3 +57,17 @@ elif expNum == 3:
     nPreSignal = 100
     nSignal = 500
     nSample = 1016
+
+elif expNum == 4:
+    fileNameListAll = []
+    classification = 4
+    repetition = 1
+
+    for a in ["acryl", "glass", "steel", "wood"]:
+            fileNameListAll.append(a + "_")
+
+    fileNameList = fileNameListAll
+
+    nPreSignal = 90
+    nSignal = 2800
+    nSample = 197

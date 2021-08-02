@@ -38,12 +38,14 @@ class Train():
 
             for fileName in fileNameList:
                 for rep in range(1, repetition + 1):
-                    set = self.readIQ(fileName + str(rep), "train")
+                    set = self.readA(fileName + str(rep), "train")
+                    # set = self.readIQ(fileName + str(rep), "train")
                     trainSet.extend(set)
                     trainLabelSet.extend(
                         self.readLabel(fileName, "train", len(set)))
 
-                    set = self.readIQ(fileName + str(rep), "validation")
+                    set = self.readA(fileName + str(rep), "validation")
+                    # set = self.readIQ(fileName + str(rep), "validation")
                     valSet.extend(set)
                     valLabelSet.extend(
                         self.readLabel(fileName, "validation", len(set)))
@@ -64,6 +66,22 @@ class Train():
         except Exception as ex:
             _, _, tb = sys.exc_info()
             print("[Train.readSet:" + str(tb.tb_lineno) + "] " + str(ex) +
+                "\n\n")
+
+    def readA(self, fileName, postfix):
+        try:
+            a = np.load(signalPath + fileName + "_signal_" + postfix + ".npy")
+
+            for idx in range(len(a)):
+                avg = a[idx].mean()
+                std = a[idx].std()
+                a[idx] = (a[idx] - avg) / std
+
+            return a
+
+        except Exception as ex:
+            _, _, tb = sys.exc_info()
+            print("[Train.readA:" + str(tb.tb_lineno) + "] " + str(ex) +
                 "\n\n")
 
     def readIQ(self, fileName, postfix):
@@ -105,8 +123,18 @@ class Train():
         try:
             set = np.zeros((size, classification))
 
+            # if fileName[:5] == "acryl":
+            #     y = 0
+            # elif fileName[:5] == "glass":
+            #     y = 1
+            # elif fileName[:5] == "steel":
+            #     y = 2
+            # elif fileName[:4] == "wood":
+            #     y = 3
+
             for x in range(size):
                 set[x][int(fileName[-2]) - 1] = 1
+                # set[x][y] = 1
 
             return set
 
@@ -129,7 +157,8 @@ class Train():
                 set_size = 0
 
                 for rep in range(1, repetition + 1):
-                    testSet = self.readIQ(fileName + str(rep), "test")
+                    testSet = self.readA(fileName + str(rep), "test")
+                    # testSet = self.readIQ(fileName + str(rep), "test")
                     testLabelSet = self.readLabel(
                         fileName, "test", len(testSet))
 
@@ -155,14 +184,14 @@ class Train():
                 f"({100 * tot_cnt / tot_size:.2f}%)")
             print("\n")
 
-            tsne = TSNE(random_state = 42).fit_transform(allPredictSet)
-            for x in range(len(allPredictSet)):
-                plt.plot(tsne[x][0], tsne[x][1])
-                plt.text(tsne[x][0], tsne[x][1], str(np.argmax(allLabelSet[x])+1),
-                    color = colors[np.argmax(allLabelSet[x])],
-                    fontdict = {'weight':'bold','size':9})
-            plt.savefig("test.png", dpi=300)
-            plt.close()
+            # tsne = TSNE(random_state = 42).fit_transform(allPredictSet)
+            # for x in range(len(allPredictSet)):
+            #     plt.plot(tsne[x][0], tsne[x][1])
+            #     plt.text(tsne[x][0], tsne[x][1], str(np.argmax(allLabelSet[x])+1),
+            #         color = colors[np.argmax(allLabelSet[x])],
+            #         fontdict = {'weight':'bold','size':9})
+            # plt.savefig("test.png", dpi=300)
+            # plt.close()
 
         except Exception as ex:
             _, _, tb = sys.exc_info()

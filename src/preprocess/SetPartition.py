@@ -22,16 +22,18 @@ class SetPartition():
                 index = self.getIndex()
 
             for fileName in fileNameList:
-                typeList = ["Isignal", "Qsignal"]
-                postfixList = ["train", "validation", "test"]
-                path = extractSignalPath + fileName + "_"
+                for rep in range(1, repetition + 1):
+                    # typeList = ["Isignal", "Qsignal"]
+                    typeList = ["signal"]
+                    postfixList = ["train", "validation", "test"]
+                    path = extractSignalPath + fileName + str(rep) + "_"
 
-                for type in typeList:
-                    set = np.load(path + type + ".npy")
+                    for type in typeList:
+                        set = np.load(path + type + ".npy")
 
-                    for x in range(len(postfixList)):
-                        postfix = "_" + postfixList[x]
-                        np.save(path + type + postfix, set[index[x]])
+                        for x in range(len(postfixList)):
+                            postfix = "_" + postfixList[x]
+                            np.save(path + type + postfix, set[index[x]])
 
             print("Set Partition Complete!", end="\n\n")
 
